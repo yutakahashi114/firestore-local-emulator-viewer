@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  node:
+    image: node:12
+    ports:
+      - 3000:3000
+    tty: true
+    volumes:
+      - .:/var/www:cached
+    environment:
+      PROJECT_ID: test-project-id
+      FIRESTORE_EMULATOR_HOST: firestore:8812
+    working_dir: /var/www
+  firestore:
+    build:
+      context: ./firestore
+    environment:
+      - PROJECT_ID=test-project-id
+    volumes:
+      - ./firestore:/firestore
+    command: /bin/bash /firestore/start.sh
